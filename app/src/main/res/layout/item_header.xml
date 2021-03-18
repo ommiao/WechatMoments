@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="cn.ommiao.wechatmoments.R"/>
+        <variable
+            name="vm"
+            type="cn.ommiao.wechatmoments.bridge.MomentsViewModel.MomentsUserViewModel" />
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,7 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="240dp"
             android:src="@mipmap/banner_wallpapers_top"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            imageUrl="@{vm.profileImageUrl}"
+            placeholder="@{R.mipmap.placeholder}"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_avatar"
@@ -20,21 +30,25 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="20dp"
+            imageUrl="@{vm.avatarImageUrl}"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="oMMiao"
+            tools:text="oMMiao"
+            android:text="@{vm.nickname}"
             android:textSize="18sp"
+            android:includeFontPadding="true"
             android:textColor="@color/white"
             android:shadowColor="@color/black"
+            android:shadowRadius="2"
             android:shadowDx="0"
             android:shadowDy="2"
             android:layout_toLeftOf="@id/iv_avatar"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="31dp"
-            android:layout_marginEnd="15dp"/>
+            android:layout_marginBottom="22dp"
+            android:layout_marginEnd="12dp"/>
 
     </RelativeLayout>
 

@@ -8,6 +8,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import cn.ommiao.wechatmoments.R;
+import cn.ommiao.wechatmoments.bridge.MomentsViewModel;
 import cn.ommiao.wechatmoments.databinding.ItemHeaderBinding;
 import cn.ommiao.wechatmoments.entity.Tweet;
 import cn.ommiao.wechatmoments.entity.User;
@@ -17,13 +18,13 @@ public class MomentsAdapter extends BaseBindingAdapter<Tweet, ViewDataBinding> {
     private static final int TYPE_HEADER = 1;
     private static final int TYPE_TWEET = 0;
 
-    private User user;
+    private MomentsViewModel.MomentsUserViewModel user;
 
     public MomentsAdapter(Context context) {
         super(context);
     }
 
-    public void setUser(User user){
+    public void setUser(MomentsViewModel.MomentsUserViewModel user){
         this.user = user;
     }
 
@@ -45,7 +46,7 @@ public class MomentsAdapter extends BaseBindingAdapter<Tweet, ViewDataBinding> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(getItemViewType(position) == TYPE_HEADER){
             ItemHeaderBinding binding = DataBindingUtil.getBinding(holder.itemView);
-            this.onBindHeader(binding, user, holder);
+            this.onBindHeader(binding, user);
             if(binding != null){
                 binding.executePendingBindings();
             }
@@ -54,8 +55,9 @@ public class MomentsAdapter extends BaseBindingAdapter<Tweet, ViewDataBinding> {
         }
     }
 
-    private void onBindHeader(ViewDataBinding binding, User user, RecyclerView.ViewHolder holder){
-
+    private void onBindHeader(ViewDataBinding binding, MomentsViewModel.MomentsUserViewModel user){
+        ItemHeaderBinding headerBinding = (ItemHeaderBinding) binding;
+        headerBinding.setVm(user);
     }
 
     @Override

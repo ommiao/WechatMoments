@@ -1,5 +1,6 @@
 package cn.ommiao.wechatmoments.bridge;
 
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -23,8 +24,25 @@ public class MomentsViewModel extends ViewModel {
         tweetsMore.postValue(CachedData.getInstance().loadMoreTweet());
     }
 
-    public User getUser(){
-        return CachedData.getInstance().getUser();
+    public static class MomentsUserViewModel extends ViewModel {
+
+        public final ObservableField<String> profileImageUrl = new ObservableField<>();
+
+        public final ObservableField<String> avatarImageUrl = new ObservableField<>();
+
+        public final ObservableField<String> nickname = new ObservableField<>();
+
+        {
+            getUser();
+        }
+
+        public void getUser(){
+            User user = CachedData.getInstance().getUser();
+            profileImageUrl.set(user.getProfileImage());
+            avatarImageUrl.set(user.getAvatar());
+            nickname.set(user.getNick());
+        }
+
     }
 
 }
