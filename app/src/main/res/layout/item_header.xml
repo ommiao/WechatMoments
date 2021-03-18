@@ -11,12 +11,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="260dp">
+        android:layout_height="@dimen/view_height_profile_container">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_profile"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="@dimen/view_height_profile_image"
             android:src="@mipmap/banner_wallpapers_top"
             android:scaleType="centerCrop"
             imageUrl="@{vm.profileImageUrl}"
@@ -24,13 +24,13 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/view_size_profile_avatar"
+            android:layout_height="@dimen/view_size_profile_avatar"
             android:src="@mipmap/ic_launcher"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="@dimen/margin_end_profile_avatar"
             imageUrl="@{vm.avatarImageUrl}"/>
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             tools:text="oMMiao"
             android:text="@{vm.nickname}"
-            android:textSize="18sp"
+            android:textSize="@dimen/txt_size_nickname"
             android:includeFontPadding="true"
             android:textColor="@color/white"
             android:shadowColor="@color/black"
@@ -47,8 +47,8 @@
             android:shadowDy="2"
             android:layout_toLeftOf="@id/iv_avatar"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="22dp"
-            android:layout_marginEnd="12dp"/>
+            android:layout_marginBottom="@dimen/margin_bottom_profile_nickname"
+            android:layout_marginEnd="@dimen/margin_right_profile_nickname"/>
 
     </RelativeLayout>
 

@@ -11,7 +11,6 @@ import cn.ommiao.wechatmoments.R;
 import cn.ommiao.wechatmoments.bridge.MomentsViewModel;
 import cn.ommiao.wechatmoments.databinding.ItemHeaderBinding;
 import cn.ommiao.wechatmoments.entity.Tweet;
-import cn.ommiao.wechatmoments.entity.User;
 
 public class MomentsAdapter extends BaseBindingAdapter<Tweet, ViewDataBinding> {
 

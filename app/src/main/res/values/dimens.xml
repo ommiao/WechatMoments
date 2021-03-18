@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="txt_size_nickname">18sp</dimen>
+    <dimen name="view_size_profile_avatar">80dp</dimen>
+    <dimen name="view_size_tweet_avatar">50dp</dimen>
+    <dimen name="margin_tweet_avatar">15dp</dimen>
+    <dimen name="view_height_profile_container">260dp</dimen>
+    <dimen name="view_height_profile_image">240dp</dimen>
+    <dimen name="margin_end_profile_avatar">20dp</dimen>
+    <dimen name="margin_bottom_profile_nickname">22dp</dimen>
+    <dimen name="margin_right_profile_nickname">12dp</dimen>
+    <dimen name="padding_moments_top_bar">20dp</dimen>
+</resources>
