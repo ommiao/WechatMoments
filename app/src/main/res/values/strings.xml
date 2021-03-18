@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Wechat Moments</string>
+    <string name="tips_loading">Loading data from server…</string>
+    <string name="tips_loading_success">Loading data success</string>
+    <string name="tips_loading_failed">Loading data failed</string>
+    <string name="tips_no_more_tweets">Loading data failed</string>
+    <string name="tips_loaded_more_tweets">%d more tweets loaded</string>
+</resources>
