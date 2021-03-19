@@ -5,6 +5,7 @@
     <dimen name="view_size_tweet_avatar">50dp</dimen>
     <dimen name="margin_tweet_avatar">15dp</dimen>
     <dimen name="view_height_profile_container">260dp</dimen>
+    <dimen name="threshold_moments_top_bar">130dp</dimen>
     <dimen name="view_height_profile_image">240dp</dimen>
     <dimen name="margin_end_profile_avatar">20dp</dimen>
     <dimen name="margin_bottom_profile_nickname">22dp</dimen>
@@ -22,4 +23,6 @@
     <dimen name="margin_tweet_image">8dp</dimen>
     <dimen name="space_line_comments">3dp</dimen>
     <dimen name="margin_top_retry">15dp</dimen>
+    <dimen name="txt_size_moments_title">22sp</dimen>
+    <dimen name="v_size_top_bar_action">18dp</dimen>
 </resources>

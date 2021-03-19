@@ -8,9 +8,9 @@ import android.util.Pair;
 
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 
@@ -22,6 +22,14 @@ import cn.ommiao.wechatmoments.entity.User;
 public class MomentsViewModel extends ViewModel {
 
     public final MutableLiveData<ArrayList<MomentsTweetViewModel>> tweetsMore = new MutableLiveData<>();
+
+    public final ObservableBoolean whiteTopBar = new ObservableBoolean();
+
+    public final ObservableInt topBarBgColor = new ObservableInt();
+
+    {
+        whiteTopBar.set(true);
+    }
 
     public void loadFirstBatchTweets(Context context){
         loadMoreTweets(context);

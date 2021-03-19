@@ -3,9 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="cn.ommiao.wechatmoments.R"/>
+        <import type="android.view.View"/>
         <variable
             name="vm"
             type="cn.ommiao.wechatmoments.bridge.MomentsViewModel" />
+        <variable
+            name="click"
+            type="cn.ommiao.wechatmoments.ui.activity.MomentsActivity.ClickProxy" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -21,34 +26,41 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <FrameLayout
+            android:id="@+id/fl_top_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            bgColor="@{vm.topBarBgColor}"
+            android:padding="@dimen/padding_moments_top_bar">
 
             <FrameLayout
-                android:id="@+id/fl_top_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_moments_top_bar">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/v_size_top_bar_action"
+                    android:layout_height="@dimen/v_size_top_bar_action"
                     android:src="@drawable/ic_back"
-                    app:tint="@color/white"/>
+                    android:layout_gravity="start|center_vertical"
+                    tint="@{vm.whiteTopBar ? R.color.white : R.color.black}"
+                    android:onClick="@{() -> click.back()}"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/app_name"/>
+                    android:textSize="@dimen/txt_size_moments_title"
+                    android:text="@string/app_name"
+                    android:textColor="@color/black"
+                    android:visibility="@{vm.whiteTopBar ? View.GONE : View.VISIBLE}"/>
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
+                    android:layout_width="@dimen/v_size_top_bar_action"
+                    android:layout_height="@dimen/v_size_top_bar_action"
+                    android:layout_gravity="end|center_vertical"
                     android:src="@drawable/ic_camera"
-                    app:tint="@color/white"/>
+                    tint="@{vm.whiteTopBar ? R.color.white : R.color.black}"/>
 
             </FrameLayout>
 
