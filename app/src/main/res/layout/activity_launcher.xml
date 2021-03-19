@@ -3,22 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="vm"
             type="cn.ommiao.wechatmoments.bridge.LauncherViewModel" />
+        <variable
+            name="click"
+            type="cn.ommiao.wechatmoments.ui.activity.LauncherActivity.ClickProxy" />
     </data>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/tv_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{vm.loading ? @string/tips_loading : (vm.loadingSuccess ? @string/tips_loading_success : @string/tips_loading_failed)}"
-            android:layout_gravity="center"
+            android:layout_centerInParent="true"
             tools:text="@string/tips_loading"/>
 
-    </FrameLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_retry"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tv_tips"
+            android:visibility="@{(!vm.loading &amp;&amp; !vm.loadingSuccess ? View.VISIBLE : View.GONE)}"
+            android:layout_marginTop="@dimen/margin_top_retry"
+            android:textColor="@color/blue"
+            android:onClick="@{() -> click.retry()}"/>
+
+    </RelativeLayout>
 
 </layout>

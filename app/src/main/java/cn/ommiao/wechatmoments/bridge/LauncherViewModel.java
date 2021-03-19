@@ -27,11 +27,11 @@ public class LauncherViewModel extends ViewModel {
     public final ObservableField<String> errorTips = new ObservableField<>();
 
     {
-        loading.set(true);
         loadData();
     }
 
     public void loadData(){
+        loading.set(true);
         ThreadPool.getHttpExecutor().execute(() -> {
             try {
                 String data = HttpProxy.getSync(Urls.URL_USER);
