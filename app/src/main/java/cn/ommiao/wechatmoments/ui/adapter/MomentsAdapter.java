@@ -10,17 +10,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import cn.ommiao.wechatmoments.R;
 import cn.ommiao.wechatmoments.bridge.MomentsViewModel;
 import cn.ommiao.wechatmoments.databinding.ItemHeaderBinding;
-import cn.ommiao.wechatmoments.entity.Tweet;
+import cn.ommiao.wechatmoments.databinding.ItemTweetBinding;
+import cn.ommiao.wechatmoments.ui.other.MomentTweetImageDecoration;
 
-public class MomentsAdapter extends BaseBindingAdapter<Tweet, ViewDataBinding> {
+public class MomentsAdapter extends BaseBindingAdapter<MomentsViewModel.MomentsTweetViewModel, ViewDataBinding> {
 
     private static final int TYPE_HEADER = 1;
     private static final int TYPE_TWEET = 0;
 
     private MomentsViewModel.MomentsUserViewModel user;
 
+    private final RecyclerView.RecycledViewPool imagesViewPool;
+
+    private final MomentTweetImageDecoration imageDecoration;
+
     public MomentsAdapter(Context context) {
         super(context);
+        imagesViewPool = new RecyclerView.RecycledViewPool();
+        imageDecoration = new MomentTweetImageDecoration(context);
     }
 
     public void setUser(MomentsViewModel.MomentsUserViewModel user){
@@ -60,8 +67,19 @@ public class MomentsAdapter extends BaseBindingAdapter<Tweet, ViewDataBinding> {
     }
 
     @Override
-    protected void onBindItem(ViewDataBinding binding, Tweet item, RecyclerView.ViewHolder holder) {
-
+    protected void onBindItem(ViewDataBinding binding, MomentsViewModel.MomentsTweetViewModel tweet, RecyclerView.ViewHolder holder) {
+        ItemTweetBinding tweetBinding = (ItemTweetBinding) binding;
+        tweetBinding.setVm(tweet);
+        if(tweet.hasImages.get()){
+            tweetBinding.rvImages.setNestedScrollingEnabled(false);
+            tweetBinding.rvImages.setHasFixedSize(true);
+            tweetBinding.rvImages.setRecycledViewPool(imagesViewPool);
+            tweetBinding.rvImages.addItemDecoration(imageDecoration);
+            ImageAdapter imageAdapter = new ImageAdapter(mContext);
+            imageAdapter.setList(tweet.images.get());
+            imageAdapter.notifyDataSetChanged();
+            tweetBinding.rvImages.setAdapter(imageAdapter);
+        }
     }
 
     @Override

@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 import cn.ommiao.wechatmoments.R;
 import cn.ommiao.wechatmoments.bridge.MomentsViewModel;
 import cn.ommiao.wechatmoments.databinding.ActivityMomentsBinding;
@@ -16,6 +18,7 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
 
     private MomentsViewModel momentsViewModel;
     private MomentsViewModel.MomentsUserViewModel momentsUserViewModel;
+    private ArrayList<MomentsViewModel.MomentsTweetViewModel> momentsTweetViewModels = new ArrayList<>();
 
     private MomentsAdapter adapter;
 
@@ -45,7 +48,7 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
     private void bindData() {
         adapter = new MomentsAdapter(this);
         adapter.setUser(momentsUserViewModel);
-        adapter.setList(momentsViewModel.allTweets);
+        adapter.setList(momentsTweetViewModels);
         mBinding.rv.setAdapter(adapter);
         //observe more tweets callback
         momentsViewModel.tweetsMore.observe(this, (moreTweets) -> {
@@ -53,8 +56,8 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
             if(moreSize == 0){
                 shortToast(R.string.app_name);
             } else {
-                int oldSize = momentsViewModel.allTweets.size();
-                momentsViewModel.allTweets.addAll(moreTweets);
+                int oldSize = momentsTweetViewModels.size();
+                momentsTweetViewModels.addAll(moreTweets);
                 if(oldSize > 0){
                     String toastLoadedMore = String.format(getResources().getString(R.string.tips_loaded_more_tweets), moreSize);
                     shortToast(toastLoadedMore);
@@ -65,7 +68,7 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
             }
         });
         //load first batch
-        momentsViewModel.loadFirstBatchTweets();
+        momentsViewModel.loadFirstBatchTweets(this);
     }
 
     @Override

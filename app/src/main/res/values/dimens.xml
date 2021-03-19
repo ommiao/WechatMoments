@@ -10,4 +10,15 @@
     <dimen name="margin_bottom_profile_nickname">22dp</dimen>
     <dimen name="margin_right_profile_nickname">12dp</dimen>
     <dimen name="padding_moments_top_bar">20dp</dimen>
+    <dimen name="txt_size_tweet_time">15sp</dimen>
+    <dimen name="txt_size_tweet_content">18sp</dimen>
+    <dimen name="padding_t_tweet_comments">5dp</dimen>
+    <dimen name="padding_h_tweet_comments">10dp</dimen>
+    <dimen name="margin_top_tweet_content">10dp</dimen>
+    <dimen name="margin_bottom_tweet_content">20dp</dimen>
+    <dimen name="margin_top_nickname">3dp</dimen>
+    <dimen name="padding_t_action_more">3dp</dimen>
+    <dimen name="padding_h_action_more">5dp</dimen>
+    <dimen name="margin_tweet_image">8dp</dimen>
+    <dimen name="space_line_comments">3dp</dimen>
 </resources>

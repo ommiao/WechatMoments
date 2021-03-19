@@ -36,7 +36,6 @@ public class Tweet extends AbstractContent {
 
     public static class Comment extends AbstractContent {
 
-
     }
 
 }
