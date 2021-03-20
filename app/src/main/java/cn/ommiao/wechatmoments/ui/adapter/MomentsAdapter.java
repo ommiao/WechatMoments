@@ -74,7 +74,9 @@ public class MomentsAdapter extends BaseBindingAdapter<MomentsViewModel.MomentsT
             tweetBinding.rvImages.setNestedScrollingEnabled(false);
             tweetBinding.rvImages.setHasFixedSize(true);
             tweetBinding.rvImages.setRecycledViewPool(imagesViewPool);
-            tweetBinding.rvImages.addItemDecoration(imageDecoration);
+            if(tweetBinding.rvImages.getItemDecorationCount() == 0){
+                tweetBinding.rvImages.addItemDecoration(imageDecoration);
+            }
             ImageAdapter imageAdapter = new ImageAdapter(mContext);
             imageAdapter.setList(tweet.images.get());
             imageAdapter.notifyDataSetChanged();

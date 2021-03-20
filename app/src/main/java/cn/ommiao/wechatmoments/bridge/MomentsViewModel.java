@@ -25,6 +25,8 @@ public class MomentsViewModel extends ViewModel {
 
     public final ObservableBoolean whiteTopBar = new ObservableBoolean();
 
+    public final ObservableBoolean loadingMore = new ObservableBoolean();
+
     public final ObservableInt topBarBgColor = new ObservableInt();
 
     {
@@ -36,6 +38,7 @@ public class MomentsViewModel extends ViewModel {
     }
 
     public void loadMoreTweets(Context context){
+        loadingMore.set(true);
         ArrayList<Tweet> tweets = CachedData.getInstance().loadMoreTweet();
         ArrayList<MomentsTweetViewModel> tweetViewModels = new ArrayList<>();
         for (Tweet tweet : tweets) {
@@ -44,6 +47,7 @@ public class MomentsViewModel extends ViewModel {
             tweetViewModels.add(tweetViewModel);
         }
         tweetsMore.postValue(tweetViewModels);
+        loadingMore.set(false);
     }
 
     private void convertTweetViewModel(Context context, Tweet tweet, MomentsTweetViewModel tweetViewModel){

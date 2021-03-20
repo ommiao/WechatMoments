@@ -7,11 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -19,6 +15,7 @@ import cn.ommiao.wechatmoments.R;
 import cn.ommiao.wechatmoments.bridge.MomentsViewModel;
 import cn.ommiao.wechatmoments.databinding.ActivityMomentsBinding;
 import cn.ommiao.wechatmoments.ui.adapter.MomentsAdapter;
+import cn.ommiao.wechatmoments.ui.other.RecyclerViewScrollListenerHelper;
 
 public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
 
@@ -45,17 +42,21 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
         clickProxy = new ClickProxy();
         mBinding.setClick(clickProxy);
 
+        fixTopBarPadding();
+
         bindData();
 
         listenListScroll();
 
+    }
+
+    private void fixTopBarPadding() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             mBinding.rv.setOnApplyWindowInsetsListener((v, insets) -> {
                 v.setPadding(v.getPaddingLeft(), 0, v.getPaddingRight(), v.getPaddingBottom());
                 return insets;
             });
         }
-
     }
 
     private void bindData() {
@@ -67,7 +68,7 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
         momentsViewModel.tweetsMore.observe(this, (moreTweets) -> {
             int moreSize = moreTweets.size();
             if(moreSize == 0){
-                shortToast(R.string.app_name);
+                shortToast(R.string.tips_no_more_tweets);
             } else {
                 int oldSize = momentsTweetViewModels.size();
                 momentsTweetViewModels.addAll(moreTweets);
@@ -86,25 +87,28 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
 
     private void listenListScroll(){
 
-        int thresholdTopBar = getResources().getDimensionPixelOffset(R.dimen.threshold_moments_top_bar);
+        final int thresholdTopBar = getResources().getDimensionPixelOffset(R.dimen.threshold_moments_top_bar);
 
-        mBinding.rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            private int totalDy;
-
+        RecyclerViewScrollListenerHelper.bindListener(mBinding.rv, new RecyclerViewScrollListenerHelper.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            public void onScrollUpOnEnd() {
+                if(!momentsViewModel.loadingMore.get()){
+                    momentsViewModel.loadMoreTweets(MomentsActivity.this);
+                }
             }
 
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                totalDy += dy;
-                Logger.d("total: " + totalDy);
-                changeTopBarStyle(thresholdTopBar, totalDy);
+            public void onScrollDownOnStart() {
+
+            }
+
+            @Override
+            public void onScrolled(int totalY) {
+                changeTopBarStyle(thresholdTopBar, totalY);
             }
         });
+
+
     }
 
     private void changeTopBarStyle(int threshold, int offsetY){
