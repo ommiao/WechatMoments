@@ -102,17 +102,26 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
                 super.onScrolled(recyclerView, dx, dy);
                 totalDy += dy;
                 Logger.d("total: " + totalDy);
-                if(totalDy > thresholdTopBar){
-                    momentsViewModel.whiteTopBar.set(false);
-                    momentsViewModel.topBarBgColor.set(Color.WHITE);
-                    setStatusBarMode(true);
-                } else {
-                    momentsViewModel.whiteTopBar.set(true);
-                    momentsViewModel.topBarBgColor.set(Color.TRANSPARENT);
-                    setStatusBarMode(false);
-                }
+                changeTopBarStyle(thresholdTopBar, totalDy);
             }
         });
+    }
+
+    private void changeTopBarStyle(int threshold, int offsetY){
+        float alpha = Math.abs(offsetY - threshold) / (float) 100;
+        if(alpha > 1 && mBinding.flTopBar.getAlpha() == 1){
+            return;
+        }
+        mBinding.flTopBar.setAlpha(alpha);
+        if(offsetY > threshold){
+            momentsViewModel.whiteTopBar.set(false);
+            momentsViewModel.topBarBgColor.set(getResources().getColor(R.color.gray));
+            setStatusBarMode(true);
+        } else {
+            momentsViewModel.whiteTopBar.set(true);
+            momentsViewModel.topBarBgColor.set(Color.TRANSPARENT);
+            setStatusBarMode(false);
+        }
     }
 
     private void setStatusBarMode(boolean dark) {
