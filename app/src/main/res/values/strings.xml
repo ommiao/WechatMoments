@@ -4,6 +4,7 @@
     <string name="tips_loading_success">Loading data success</string>
     <string name="tips_loading_failed">Loading data failed</string>
     <string name="tips_no_more_tweets">No more tweet</string>
+    <string name="tips_refreshed_tweets">Refreshed</string>
     <string name="tips_loaded_more_tweets">%d more tweets loaded</string>
     <string name="txt_tweet_time">1 min ago</string>
     <string name="btn_retry">RETRY</string>

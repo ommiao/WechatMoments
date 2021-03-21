@@ -18,6 +18,7 @@ import cn.ommiao.wechatmoments.R;
 import cn.ommiao.wechatmoments.constant.CachedData;
 import cn.ommiao.wechatmoments.entity.Tweet;
 import cn.ommiao.wechatmoments.entity.User;
+import cn.ommiao.wechatmoments.util.ThreadPool;
 
 public class MomentsViewModel extends ViewModel {
 
@@ -27,10 +28,30 @@ public class MomentsViewModel extends ViewModel {
 
     public final ObservableBoolean loadingMore = new ObservableBoolean();
 
+    public final MutableLiveData<Boolean> refreshFinished = new MutableLiveData<>();
+
+    public final ObservableInt progressBarTranslationY = new ObservableInt();
+
+    public final ObservableInt progressBarRotation = new ObservableInt();
+
     public final ObservableInt topBarBgColor = new ObservableInt();
 
     {
         whiteTopBar.set(true);
+    }
+
+    public void refreshTweets(Context context){
+        ThreadPool.getHttpExecutor().execute(() -> {
+            CachedData.getInstance().reset();
+            //delay 2s
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            loadFirstBatchTweets(context);
+            refreshFinished.postValue(true);
+        });
     }
 
     public void loadFirstBatchTweets(Context context){

@@ -1,6 +1,7 @@
 package cn.ommiao.wechatmoments.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.LayoutRes;
@@ -27,6 +28,15 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatA
         mSharedViewModel = getAppViewModelProvider().get(SharedViewModel.class);
         mBinding = DataBindingUtil.setContentView(this, getLayoutId());
         mBinding.setLifecycleOwner(this);
+    }
+
+    protected void setStatusBarMode(boolean dark) {
+        View decor = getWindow().getDecorView();
+        if (dark) {
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        } else {
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
     }
 
     protected abstract @LayoutRes

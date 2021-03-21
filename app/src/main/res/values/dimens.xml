@@ -25,4 +25,8 @@
     <dimen name="margin_top_retry">15dp</dimen>
     <dimen name="txt_size_moments_title">22sp</dimen>
     <dimen name="v_size_top_bar_action">18dp</dimen>
+    <dimen name="size_tweets_progress_bar">30dp</dimen>
+    <dimen name="margin_left_tweets_progress_bar">50dp</dimen>
+    <dimen name="margin_top_tweets_progress_bar">-80dp</dimen>
+    <dimen name="threshold_top_tweets_progress_bar">120dp</dimen>
 </resources>

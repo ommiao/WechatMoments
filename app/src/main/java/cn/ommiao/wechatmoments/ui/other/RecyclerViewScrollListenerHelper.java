@@ -7,15 +7,19 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.orhanobut.logger.Logger;
+
 public class RecyclerViewScrollListenerHelper {
 
     private int totalDy;
 
-    private boolean canScrollVerticalUp = true;
-    private boolean canScrollVerticalDown = true;
+    private boolean canScrollVerticalUp = false;
+    private boolean canScrollVerticalDown = false;
 
     private boolean notifiedEnd;
     private boolean notifiedStart;
+
+    private boolean canScrollVerticalUpOnFingerDown = true;
 
     private final RecyclerView rv;
     private final OnScrollListener listener;
@@ -29,9 +33,11 @@ public class RecyclerViewScrollListenerHelper {
 
         void onScrollUpOnEnd();
 
-        void onScrollDownOnStart();
+        void onScrollDownOnStart(int dy);
 
         void onScrolled(int totalY);
+
+        void onScrollDownOnStartRelease();
 
     }
 
@@ -56,21 +62,39 @@ public class RecyclerViewScrollListenerHelper {
 
         rv.setOnTouchListener(new View.OnTouchListener() {
 
-            private int initialTouchY;
+            private int initialTouchY = -1;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()){
                     case MotionEvent.ACTION_DOWN:
+                        Logger.d("down");
                         initialTouchY = (int) (event.getY() + 0.5);
+                        canScrollVerticalUpOnFingerDown = canScrollVerticalUp;
                         break;
                     case MotionEvent.ACTION_MOVE:
+                        if(initialTouchY == -1){
+                            initialTouchY = (int) (event.getY() + 0.5);
+                            canScrollVerticalUpOnFingerDown = canScrollVerticalUp;
+                        }
                         int dy = (int) (event.getY() + 0.5) - initialTouchY;
-                        if(dy > 5){
+                        if(dy > 0){
                             if(!canScrollVerticalUp){
-                                listener.onScrollDownOnStart();
+                                if(canScrollVerticalUpOnFingerDown){
+                                    initialTouchY = (int) (event.getY() + 0.5);
+                                    canScrollVerticalUpOnFingerDown = false;
+                                    dy = 0;
+                                }
+                                listener.onScrollDownOnStart(dy);
+                                notifiedStart = true;
+                                Logger.d("move, initialY: " + initialTouchY + ", stop1: " + dy);
+                                return true;
                             }
-                        } else if(dy < -5){
+                        } else if(dy < 0){
+                            if(notifiedStart){
+                                Logger.d("move, initialY: " + initialTouchY + ", stop2: " + dy);
+                                return true;
+                            }
                             if(!canScrollVerticalDown && !notifiedEnd){
                                 listener.onScrollUpOnEnd();
                                 notifiedEnd = true;
@@ -78,7 +102,12 @@ public class RecyclerViewScrollListenerHelper {
                         }
                         break;
                     case MotionEvent.ACTION_UP:
+                        initialTouchY = -1;
+                        if(notifiedStart){
+                            listener.onScrollDownOnStartRelease();
+                        }
                         notifiedEnd = false;
+                        notifiedStart = false;
                         break;
                 }
                 return false;
