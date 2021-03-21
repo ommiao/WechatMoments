@@ -138,6 +138,9 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
 
             @Override
             public void onScrollDownOnStartRelease() {
+                if(progressBarAnimating){
+                    return;
+                }
                 int translationY = momentsViewModel.progressBarTranslationY.get();
                 if(translationY == thresholdTopBarProgress){
                     //refresh list and reset progress bar
@@ -164,6 +167,7 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
         int rotationCurrent = momentsViewModel.progressBarRotation.get();
         int rotationFinal = rotationCurrent + COUNT_REFRESH_ROTATION * 360;
         animatorRotation = ValueAnimator.ofInt(rotationCurrent, rotationFinal);
+        animatorRotation.setInterpolator(new LinearInterpolator());
         animatorRotation.setDuration(DURATION_REFRESH_ROTATION);
         animatorRotation.setRepeatCount(ValueAnimator.INFINITE);
         animatorRotation.addUpdateListener(animation -> {
