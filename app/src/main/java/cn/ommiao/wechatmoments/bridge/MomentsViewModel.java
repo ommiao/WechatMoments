@@ -36,6 +36,9 @@ public class MomentsViewModel extends ViewModel {
 
     public final ObservableInt topBarBgColor = new ObservableInt();
 
+    public final ObservableBoolean editMode = new ObservableBoolean();
+    public final ObservableField<String> newComment = new ObservableField<>();
+
     {
         whiteTopBar.set(true);
     }
@@ -75,9 +78,16 @@ public class MomentsViewModel extends ViewModel {
         tweetViewModel.content.set(tweet.getContent());
         tweetViewModel.nickname.set(tweet.getSender().getNick());
         tweetViewModel.avatar.set(tweet.getSender().getAvatar());
+        tweetViewModel.commentsOrigin.set(tweet.getComments());
+        setMomentsSpan(context, tweet.getComments(), tweetViewModel);
+        tweetViewModel.hasImages.set(tweet.getImages().size() > 0);
+        tweetViewModel.images.set(tweet.getImages());
+    }
+
+    private void setMomentsSpan(Context context, ArrayList<Tweet.Comment> comments, MomentsTweetViewModel tweetViewModel) {
         StringBuilder builder = new StringBuilder();
         ArrayList<Pair<Integer, Integer>> spans = new ArrayList<>();
-        for (Tweet.Comment comment : tweet.getComments()) {
+        for (Tweet.Comment comment : comments) {
             String nick = comment.getSender().getNick();
             String content = comment.getContent();
             int start = builder.length();
@@ -86,7 +96,7 @@ public class MomentsViewModel extends ViewModel {
             builder.append(nick).append(": ").append(content).append("\n");
             spans.add(spanPair);
         }
-        if(tweet.getComments().size() > 0){
+        if(comments.size() > 0){
             String s = builder.toString();
             String allComments = s.substring(0, s.length() - "\n".length());
             SpannableString spannableComments = new SpannableString(allComments);
@@ -96,8 +106,14 @@ public class MomentsViewModel extends ViewModel {
             }
             tweetViewModel.comments.set(spannableComments);
         }
-        tweetViewModel.hasImages.set(tweet.getImages().size() > 0);
-        tweetViewModel.images.set(tweet.getImages());
+    }
+
+    public void appendComment(Context context, MomentsTweetViewModel viewModel, User user, String comment){
+        Tweet.Comment newComment = new Tweet.Comment();
+        newComment.setSender(user);
+        newComment.setContent(comment);
+        viewModel.commentsOrigin.get().add(newComment);
+        setMomentsSpan(context, viewModel.commentsOrigin.get(), viewModel);
     }
 
     public static class MomentsUserViewModel extends ViewModel {
@@ -132,6 +148,8 @@ public class MomentsViewModel extends ViewModel {
         public final ObservableBoolean hasImages = new ObservableBoolean();
 
         public final ObservableField<SpannableString> comments = new ObservableField<>();
+
+        public final ObservableField<ArrayList<Tweet.Comment>> commentsOrigin = new ObservableField<>();
 
         public final ObservableField<ArrayList<Tweet.Image>> images = new ObservableField<>();
 

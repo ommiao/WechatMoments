@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.Nullable;
@@ -16,11 +17,12 @@ import java.util.ArrayList;
 
 import cn.ommiao.wechatmoments.R;
 import cn.ommiao.wechatmoments.bridge.MomentsViewModel;
+import cn.ommiao.wechatmoments.constant.CachedData;
 import cn.ommiao.wechatmoments.databinding.ActivityMomentsBinding;
 import cn.ommiao.wechatmoments.ui.adapter.MomentsAdapter;
 import cn.ommiao.wechatmoments.ui.other.RecyclerViewScrollListenerHelper;
 
-public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
+public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> implements MomentsAdapter.OnItemActionClickListener{
 
     private static final long DURATION_REFRESH_ROTATION = 2000L;
     private static final int COUNT_REFRESH_ROTATION = 3;
@@ -29,6 +31,8 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
     private MomentsViewModel momentsViewModel;
     private MomentsViewModel.MomentsUserViewModel momentsUserViewModel;
     private ArrayList<MomentsViewModel.MomentsTweetViewModel> momentsTweetViewModels = new ArrayList<>();
+
+    private MomentsViewModel.MomentsTweetViewModel tweetViewModelCurrent;
 
     private MomentsAdapter adapter;
 
@@ -79,6 +83,7 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
         adapter = new MomentsAdapter(this);
         adapter.setUser(momentsUserViewModel);
         adapter.setList(momentsTweetViewModels);
+        adapter.setOnItemActionClickListener(this);
         mBinding.rv.setAdapter(adapter);
         //observe more tweets loaded
         momentsViewModel.tweetsMore.observe(this, (moreTweets) -> {
@@ -218,10 +223,21 @@ public class MomentsActivity extends BaseActivity<ActivityMomentsBinding> {
         return R.layout.activity_moments;
     }
 
+    @Override
+    public void onComment(int pos) {
+        tweetViewModelCurrent = momentsTweetViewModels.get(pos - 1);
+        momentsViewModel.editMode.set(true);
+    }
+
     public class ClickProxy {
 
         public void back(){
             finish();
+        }
+
+        public void send(){
+            momentsViewModel.editMode.set(false);
+            momentsViewModel.appendComment(MomentsActivity.this, tweetViewModelCurrent, CachedData.getInstance().getUser(), momentsViewModel.newComment.get());
         }
 
     }

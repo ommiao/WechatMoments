@@ -26,6 +26,28 @@
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+        <LinearLayout
+            android:visibility="@{vm.editMode ? View.VISIBLE : View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@={vm.newComment}"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_send"
+                android:textColor="@color/black"
+                android:onClick="@{() -> click.send()}"/>
+
+        </LinearLayout>
+
         <FrameLayout
             android:id="@+id/fl_top_bar"
             android:layout_width="match_parent"

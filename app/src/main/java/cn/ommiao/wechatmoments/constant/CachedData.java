@@ -10,7 +10,7 @@ import cn.ommiao.wechatmoments.entity.User;
  */
 public class CachedData {
 
-    private static CachedData mInstance;
+    private static volatile CachedData mInstance;
 
     private User user;
 
@@ -26,9 +26,11 @@ public class CachedData {
     }
 
     public static void init(User user, ArrayList<Tweet> tweets){
-        mInstance = new CachedData();
-        mInstance.user = user;
-        mInstance.tweets = tweets;
+        synchronized (CachedData.class){
+            mInstance = new CachedData();
+            mInstance.user = user;
+            mInstance.tweets = tweets;
+        }
     }
 
     public User getUser() {

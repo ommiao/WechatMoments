@@ -14,4 +14,11 @@ public abstract class AbstractContent extends JavaBean{
         return sender;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
 }

@@ -24,6 +24,8 @@ public class MomentsAdapter extends BaseBindingAdapter<MomentsViewModel.MomentsT
 
     private final MomentTweetImageDecoration imageDecoration;
 
+    private OnItemActionClickListener onItemActionClickListener;
+
     public MomentsAdapter(Context context) {
         super(context);
         imagesViewPool = new RecyclerView.RecycledViewPool();
@@ -82,10 +84,23 @@ public class MomentsAdapter extends BaseBindingAdapter<MomentsViewModel.MomentsT
             imageAdapter.notifyDataSetChanged();
             tweetBinding.rvImages.setAdapter(imageAdapter);
         }
+        tweetBinding.ivMore.setOnClickListener((v -> {
+            if(onItemActionClickListener != null){
+                onItemActionClickListener.onComment(holder.getLayoutPosition());
+            }
+        }));
     }
 
     @Override
     public int getItemCount() {
         return mList == null ? 1 : mList.size() + 1;
+    }
+
+    public void setOnItemActionClickListener(OnItemActionClickListener onItemActionClickListener) {
+        this.onItemActionClickListener = onItemActionClickListener;
+    }
+
+    public interface OnItemActionClickListener {
+        void onComment(int pos);
     }
 }

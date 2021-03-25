@@ -8,4 +8,5 @@
     <string name="tips_loaded_more_tweets">%d more tweets loaded</string>
     <string name="txt_tweet_time">1 min ago</string>
     <string name="btn_retry">RETRY</string>
+    <string name="btn_send">SEND</string>
 </resources>
